@@ -1,0 +1,524 @@
+﻿Data Push Webhook
+
+
+For equites and etf
+{
+    "requestId": "573b9c8f-075c-4a50-9426-6906c46e4691",
+    "state": {
+        "state": "SUCCESS",
+        "consentStatus": "ACTIVE",
+        "dataFetchStatus": "SUCCESS"
+    },
+    "data": {
+        "mutual_funds.transactions": [
+            {
+                "ucc": "UCC123456",
+                "txnId": "TXN001",
+                "maskedDematID": "128-XXXXXXXX5678",
+                "nav": "150",
+                "maskedAccNumber": "128-XXXXXXXX5678",
+                "isin": "ABCD123456789",
+                "isinDescription": "Example Mutual Fund",
+                "schemeCode": "123456",
+                "schemePlan": "REGULAR",
+                "account_type": "MUTUAL_FUNDS",
+                "amount": 5000.0,
+                "amc": "XYZ Mutual Fund",
+                "registrar": "ABC Registrar",
+                "narration": "Initial Investment",
+                "units": "20",
+                "mode": "DEMAT",
+                "lockInDays": "180",
+                "navDate": 1720310400000,
+                "linkedAccRef": "d5111431-8e1a-4572-b95c-9f8da3d1bf9e",
+                "lockInFlag": "true",
+                "transactionDate": 1718496000000,
+                "type": "BUY",
+                "maskedFolioNo": "128-XXXXXXXX5678",
+                "amfiCode": "AMFI7890"
+            }
+        ],
+        "equities.transactions": [
+            {
+                "rate": "1067.55",
+                "txnId": "07122023074455-3411191114464011",
+                "transactionDateTime": 1701935095000,
+                "orderId": "0",
+                "maskedAccNumber": "FNRKXXXXXX5422",
+                "isin": "INE0J1Y01017",
+                "isinDescription": "LIFE INSURANCE-EQ",
+                "account_type": "EQUITIES",
+                "equityCategory": "EQUITY",
+                "exchange": null,
+                "companyName": "LIFE INSURANCE CORPORATION OF INDIA # EQUITY SHARES",
+                "narration": "EP-DR Txn:05040410 CtBo:1100001100019678 1211232023230",
+                "units": 39,
+                "linkedAccRef": "e756a295-68b9-4f7c-a18f-ae273650f325",
+                "type": "SELL"
+            }
+        ],
+        "nps.transactions": [],
+        "deposit.holders": [
+            {
+                "name": "Tony Stark",
+                "email": "uat@finarkein.com",
+                "dob": 1032825600000,
+                "maskedAccNumber": "FNRKXXXXXXX5876",
+                "account_type": "DEPOSIT",
+                "landLine": null,
+                "address": "Milkyway, 4th arm",
+                "ckycCompliance": true,
+                "linkedAccRef": "f588a639-2039-4507-8d12-dfc015a2b3b1",
+                "type": "SINGLE",
+                "mobile": "8999256144",
+                "pan": "ABCDE1234F",
+                "nominee": "NOT-REGISTERED"
+            }
+        ],
+        "mutual_funds.summary": [
+            {
+                "ucc": "UCC123456",
+                "maskedDematID": "128-XXXXXXXX5678",
+                "nav": 1500.0,
+                "maskedAccNumber": "128-XXXXXXXX5678",
+                "isin": "ABCD123456789",
+                "isinDescription": "Example Mutual Fund",
+                "schemeCode": "123456",
+                "folioNo": "FOL123",
+                "account_type": "MUTUAL_FUNDS",
+                "costValue": 10000.0,
+                "closingUnits": "100",
+                "amc": "XYZ Mutual Funds",
+                "registrar": "ABC Registrar",
+                "schemeOption": "GROWTH_TYPE",
+                "schemeCategory": "LARGE_CAP_FUND",
+                "fatcaStatus": "Compliant",
+                "lienUnits": "10",
+                "lockinUnits": "50",
+                "navDate": 1686700800000,
+                "linkedAccRef": "d5111431-8e1a-4572-b95c-9f8da3d1bf9e",
+                "currentValue": 150000.0,
+                "schemeTypes": "EQUITY_SCHEMES",
+                "maskedFolioNo": "128-XXXXXXXX5678",
+                "amfiCode": "AMFI7890"
+            }
+        ],
+        "nps.holders": [
+            {
+                "name": "abc",
+                "email": "test@email.com",
+                "dob": 323568000000,
+                "maskedAccNumber": "FNRKXXXXXXXXXXXXX6666",
+                "account_type": "NPS",
+                "landLine": "landline1",
+                "pranId": "XXXXXXXX3454",
+                "maskedPranId": "FNRKXXXXXXXXXXXXX6666",
+                "address": "address1",
+                "ckycCompliance": false,
+                "linkedAccRef": "a6ad311e-21fa-4f1d-a12e-6e6b701464ee",
+                "mobile": "8999256144",
+                "pan": "ABCDE1234F",
+                "nominee": "REGISTERED"
+            }
+        ],
+        "nps.summary": [
+            {
+                "allocationPercentage": "schemeId1",
+                "openingDate": null,
+                "nav": 0.0,
+                "maskedAccNumber": "FNRKXXXXXXXXXXXXX6666",
+                "schemePreferenceType": "AUTO_MODERATE",
+                "freeUnits": 0.0,
+                "equityAssetValue": null,
+                "account_type": "NPS",
+                "totalUnits": "nav1",
+                "otherAssetValue": null,
+                "tier2NAVDate": null,
+                "tier1Status": null,
+                "status": null,
+                "totalValueOfScheme": 0.0,
+                "debtAssetValue": null,
+                "maskedPranId": "FNRKXXXXXXXXXXXXX6666",
+                "schemeName": 0.0,
+                "linkedAccRef": "a6ad311e-21fa-4f1d-a12e-6e6b701464ee",
+                "schemeId": "schemeName1",
+                "tier2Status": null,
+                "blockedUnits": 0.0,
+                "currentValue": null,
+                "amountInTransition": 0.0,
+                "tier1NAVDate": null,
+                "holding": "Tier1Holding"
+            }
+        ],
+        "deposit.transactions.meta": {
+            "accountWiseMeta": [
+                {
+                    "noOfTransactions": 506,
+                    "toTimestamp": 1735603200000,
+                    "maskedAccNumber": "FNRKXXXXXXX5876",
+                    "fromTimestamp": 1698796800000,
+                    "fromDate": "011123",
+                    "noOfDays": 426,
+                    "toDate": "311224",
+                    "noOfMonths": 13
+                }
+            ],
+            "noOfTransactions": 506,
+            "toTimestamp": 1735603200000,
+            "fromTimestamp": 1698796800000,
+            "fromDate": "011123",
+            "noOfDays": 426,
+            "toDate": "311224",
+            "noOfMonths": 13
+        },
+        "deposit.statement.meta": {
+            "toTimestamp": 1737970972554,
+            "fromTimestamp": 1698796800000,
+            "fromDate": "011123",
+            "noOfDays": 453,
+            "toDate": "270125"
+        },
+        "etf.summary": [
+            {
+                "nav": "0",
+                "maskedDematId": null,
+                "lastNavDate": 1725408000000,
+                "maskedAccNumber": null,
+                "isin": "IN000AAA000A",
+                "isinDescription": "ABC BANK LIMITED EQ LISTING",
+                "folioNo": "XXXXX4567",
+                "account_type": "ETF",
+                "units": 50.0,
+                "linkedAccRef": "c66c9747-eaf0-4a71-b775-b76277960e03",
+                "currentValue": 0.0
+            }
+        ],
+        "equities.holders": [
+            {
+                "name": "TONY STARK",
+                "email": "TONEY_S@FINARKEIN.COM",
+                "dob": null,
+                "maskedAccNumber": "FNRKXXXXXX5422",
+                "folioNo": null,
+                "account_type": "EQUITIES",
+                "landLine": "",
+                "dematId": "1234567890123456",
+                "address": "T/123 STARK TOWER, MUMBAI",
+                "ckycCompliance": false,
+                "linkedAccRef": "e756a295-68b9-4f7c-a18f-ae273650f325",
+                "mobile": "8999256144",
+                "pan": "ABCDE1234F",
+                "nominee": "NOT-REGISTERED"
+            }
+        ],
+        "mutual_funds.holders": [
+            {
+                "name": "John Doe",
+                "maskedDematID": "128-XXXXXXXX5678",
+                "email": "john@test.com",
+                "dob": 643593600000,
+                "maskedAccNumber": "128-XXXXXXXX5678",
+                "folioNo": "XXXXX1234",
+                "account_type": "MUTUAL_FUNDS",
+                "landLine": null,
+                "dematId": "12010000005678",
+                "address": "Flat-13, Raheja Towers, Goregoan, Mumbai, Maharashtra - 400022",
+                "ckycCompliance": "Completed",
+                "linkedAccRef": "d5111431-8e1a-4572-b95c-9f8da3d1bf9e",
+                "mobile": "8999256144",
+                "pan": "QWERT0000F",
+                "maskedFolioNo": "128-XXXXXXXX5678",
+                "nominee": "REGISTERED"
+            }
+        ],
+        "deposit.transactions": [
+            {
+                "reference": "REF07423471",
+                "txnId": "txn0058392722",
+                "maskedAccNumber": "FNRKXXXXXXX5876",
+                "transactionTimestamp": 1698796800000,
+                "account_type": "DEPOSIT",
+                "currentBalance": 79183.95,
+                "amount": 5265.0,
+                "valueDate": 1698796800000,
+                "narration": "UPI/127542148881/UPI/pooja9n@okicici/ICICI Bank/ICI963f5e3037b546dbba4224ec3aecb",
+                "mode": "UPI",
+                "linkedAccRef": "f588a639-2039-4507-8d12-dfc015a2b3b1",
+                "type": "CREDIT"
+            }
+        ],
+        "etf.transactions": [
+            {
+                "txnId": "a3c722ac4d99cde4",
+                "nav": 0.0,
+                "maskedDematId": null,
+                "transactionDateTime": 1725473631000,
+                "maskedAccNumber": null,
+                "isin": "IN000AAA000A",
+                "isinDescription": "ABC BANK LIMITED EQ LISTING",
+                "brokerCode": "00010",
+                "account_type": "ETF",
+                "amount": 0.0,
+                "narration": "narration1",
+                "units": 50.0,
+                "linkedAccRef": "c66c9747-eaf0-4a71-b775-b76277960e03",
+                "type": "BUY"
+            }
+        ],
+        "equities.summary": [
+            {
+                "lastTradedPrice": "24.51",
+                "maskedAccNumber": "FNRKXXXXXX5422",
+                "isin": "INE528G01035",
+                "isinDescription": "YES BANK LTD-EQ2/-",
+                "account_type": "EQUITIES",
+                "units": 600,
+                "linkedAccRef": "e756a295-68b9-4f7c-a18f-ae273650f325",
+                "type": "DEMAT",
+                "currentValue": "14706.0",
+                "issuerName": "YES BANK LIMITED"
+            }
+        ],
+        "deposit.summary": [
+            {
+                "currentODLimit": "0",
+                "openingDate": "2004-08-06",
+                "fipName": "Millennium Bank",
+                "maskedAccNumber": "FNRKXXXXXXX5876",
+                "branch": "Jayanagar 4th Block",
+                "account_type": "DEPOSIT",
+                "currentBalance": "85871.80",
+                "drawingLimit": "0",
+                "accountAgeInDays": 7479,
+                "pending_transactionType": "DEBIT",
+                "status": "ACTIVE",
+                "micrCode": "500240246",
+                "balanceDateTime": 1702862760000,
+                "currency": "INR",
+                "pending_amount": 0.0,
+                "linkedAccRef": "f588a639-2039-4507-8d12-dfc015a2b3b1",
+                "ifscCode": "ICIC0001124",
+                "type": "SAVINGS",
+                "facility": "OD",
+                "exchgeRate": " "
+            }
+        ],
+        "etf.holders": [
+            {
+                "name": "name1",
+                "email": "qc@email.com",
+                "maskedDematId": null,
+                "dob": 957398400000,
+                "maskedAccNumber": null,
+                "account_type": "ETF",
+                "landLine": "0221234567",
+                "dematId": "XXXXXXXXXXXX0987",
+                "kycCompliance": false,
+                "address": "address1",
+                "linkedAccRef": "c66c9747-eaf0-4a71-b775-b76277960e03",
+                "mobile": "9999999999",
+                "pan": "AAAAA0000A",
+                "nominee": "REGISTERED"
+            }
+        ]
+    },
+    "addOnParams": {
+        "workspace": "fnrkuat",
+        "customerSegment": "hni",
+        "other-key-1": "other-value-1"
+    }
+}
+
+
+
+
+
+
+For bank account linking flow 
+{
+ "webhookId": "6a7e556d-5bcc-4901-ae01-e7ff7b322435",
+ "webhookType": "dataPush",
+ "timestamp": "2025-05-12T04:36:58.682663796Z",
+ "eventData": {
+ "requestId": "daffa051-7fe0-45e2-b04c-9c64b7edd348",
+ "addOnParams": {
+ "id": "eimpl"
+ },
+ "data": {...} //see below
+ }
+
+
+
+
+{
+  "data": {
+    "deposit.holders": [
+      {
+        "name": "Tony Stark",
+        "email": "uat@finarkein.com",
+        "dob": 1032825600000,
+        "maskedAccNumber": "FNRKXXXXXXX5873",
+        "account_type": "DEPOSIT",
+        "landLine": null,
+        "address": "Milkyway, 4th arm",
+        "ckycCompliance": true,
+        "linkedAccRef": "182d2d38-48b6-42ca-a0ae-e39c2ea660af",
+        "type": "SINGLE",
+        "mobile": "9999999999",
+        "pan": "ABCDE1234F",
+        "nominee": "NOT-REGISTERED"
+      }
+    ],
+    "deposit.transactions.meta": {
+      "accountWiseMeta": [
+        {
+          "noOfTransactions": 466,
+          "toTimestamp": 1747008000000,
+          "maskedAccNumber": "FNRKXXXXXXX5873",
+          "fromTimestamp": 1715558400000,
+          "fromDate": "130524",
+          "noOfDays": 364,
+          "toDate": "120525",
+          "noOfMonths": 11
+        }
+      ],
+      "noOfTransactions": 932,
+      "toTimestamp": 1747008000000,
+      "fromTimestamp": 1715558400000,
+      "fromDate": "130524",
+      "noOfDays": 364,
+      "toDate": "120525",
+      "noOfMonths": 11
+    },
+    "deposit.statement.meta": {
+      "toTimestamp": 1747024613768,
+      "fromTimestamp": 1715488613768,
+      "fromDate": "120524",
+      "noOfDays": 365,
+      "toDate": "120525"
+    },
+    "deposit.summary": [
+      {
+        "currentODLimit": "0",
+        "openingDate": "2000-09-06",
+        "fipName": "Millennium Bank",
+        "maskedAccNumber": "FNRKXXXXXXX5873",
+        "branch": "Jayanagar 4th Block",
+        "account_type": "DEPOSIT",
+        "currentBalance": "85871.80",
+        "drawingLimit": "0",
+        "accountAgeInDays": 9014,
+        "pending_transactionType": "DEBIT",
+        "status": "ACTIVE",
+        "micrCode": "500240246",
+        "balanceDateTime": 1702862760000,
+        "currency": "INR",
+        "pending_amount": 0,
+        "linkedAccRef": "182d2d38-48b6-42ca-a0ae-e39c2ea660af",
+        "ifscCode": "ICIC0001124",
+        "type": "SAVINGS",
+        "facility": "OD",
+        "exchgeRate": " "
+      }
+    ],
+    "deposit.transactions": [
+      {
+        "reference": "REF01160273",
+        "txnId": "txn0017031172",
+        "maskedAccNumber": "FNRKXXXXXXX5873",
+        "transactionTimestamp": 1734739200000,
+        "account_type": "DEPOSIT",
+        "currentBalance": 76775.54,
+        "amount": 878.16,
+        "valueDate": 1734739200000,
+        "narration": "UPI/132470261280/Oid100003045633/paytm-irctcapp@/Paytm Payments /PTM20211120231",
+        "mode": "UPI",
+        "linkedAccRef": "182d2d38-48b6-42ca-a0ae-e39c2ea660af",
+        "type": "DEBIT"
+      }
+    ]
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Flow Run Status Webhook
+
+
+
+
+{
+  "webhookId": "f9e10206-9a99-4d6a-8081-adb4921ec77e",
+  "webhookType": "flowRunStatus",
+  "timestamp": "2025-01-27T06:19:50.746647734Z",
+  "eventData": {
+    "requestId": "a8b510aa-e981-4d85-a98d-5e6ab0196caa",
+    "state": "FAILED",
+    "journeyStatus": "ABANDONED",
+    "consentStatus": "NA",
+    "dataFetchStatus": "NA",
+    "addOnParams": {
+      "any-key": "any-value"
+    }
+  }
+}
+
+
+
+
+* webhookId: Unique ID generated by Finarkein for the webhook
+* webhookType: Type of webhook. Static value as ‘flowRunStatus’
+* timestamp: Time at which the webhook is generated
+* eventData.requestId: ID of the request for which this webhook is generated. This is the same Request ID you receive in the response of New Run APIs
+* eventData.addOnParams: Open object which was sent by you in Consent > New Run API
+* eventData.state: Final status of the respective New Run request. Possible values are
+   * SUCCESS: When request is completed successfully
+   * FAILED: When request is failed
+* eventData.journeyStatus: Status about whether User completed the Consent UI journey. Possible values are
+   * COMPLETED: User completed the journey (consent approved/denied)
+   * ABANDONED: User left the journey in between
+   * PENDING: User did not start the journey
+* eventData.consentStatus: Consent status value
+   * NA: Status is not available. This is when User has not started the consent journey
+   * ACTIVE: Consent is approved
+   * REJECTED: Consent is denied
+   * PENDING: User has not acted on the consent even when User started the journey
+* eventData.dataFetchStatus: Data fetch status value
+   * NA: Status is not available. This is when User has not started the consent journey
+   * SUCCESS: Fetch is success
+   * FAILED: Fetch has failed
+   * RUNNING: Fetch is running
+   * WAITING: Waiting for User to grant consent. This is when Consent status is Pending

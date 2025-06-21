@@ -1,0 +1,136 @@
+{
+    "decentroTxnId": "XXXXXXXX",
+    "status": "SUCCESS",
+    "responseCode": "S00000",
+    "message": "Credit Report fetched successfully",
+    "data": {
+        "cCRResponse": {
+            "status": "1",
+            "cIRReportDataLst": [
+                {
+                    "cIRReportData": {
+                        "iDAndContactInfo": {
+                            "personalInfo": {
+                                "name": {
+                                    "fullName": "VIJAY MALLYA",
+                                    "firstName": "VIJAY",
+                                    "lastName": "MALLYA "
+                                },
+                                "dateOfBirth": "YYYY-MM-DD",
+                                "gender": "Male",
+                                "age": {
+                                    "age": "XXX"
+                                },
+                                "totalIncome": "XXXXXX",
+                                "occupation": "SALARIED"
+                            },
+                            "identityInfo": {
+                                "pANId": [
+                                    {
+                                        "seq": "1",
+                                        "reportedDate": "XXXX-XX-XX",
+                                        "idNumber": "XXXXXX"
+                                    }
+                                ],
+                                "passport": [
+                                    {
+                                        "seq": "1",
+                                        "reportedDate": "XXXX-XX-XX",
+                                        "idNumber": "XXXXXXXX"
+                                    }
+                                ]
+                            },
+                            "addressInfo": [
+                                {
+                                    "seq": "1",
+                                    "reportedDate": "YYYY-MM-DD",
+                                    "address": "XXXXX",
+                                    "state": "XX",
+                                    "postal": "XXXXXX",
+                                    "type": "Primary"
+                                }
+                            ],
+                            "phoneInfo": [
+                                {
+                                    "seq": "1",
+                                    "typeCode": "H",
+                                    "reportedDate": "YYYY-MM-DD",
+                                    "number": "9999999999"
+                                }
+                            ],
+                            "emailAddressInfo": [
+                                {
+                                    "seq": "1",
+                                    "reportedDate": "YYYY-MM-DD",
+                                    "emailAddress": "example@email.com"
+                                }
+                            ]
+                        },
+                        "retailAccountsSummary": {
+                            "noOfAccounts": "XX",
+                            "noOfActiveAccounts": "X",
+                            "noOfWriteOffs": "X",
+                            "totalPastDue": "XXXXX",
+                            "mostSevereStatusWithIn24Months": "XXXXXXX",
+                            "singleHighestCredit": "XXXXXXX",
+                            "singleHighestSanctionAmount": "XXXXXX",
+                            "totalHighCredit": "XXXXXX",
+                            "averageOpenBalance": "XXXXXX",
+                            "singleHighestBalance": "XXXXX",
+                            "noOfPastDueAccounts": "X",
+                            "noOfZeroBalanceAccounts": "X",
+                            "recentAccount": "XXXXXX",
+                            "oldestAccount": "XXXXXX",
+                            "totalBalanceAmount": "XXXXXXXX",
+                            "totalSanctionAmount": "XXXXXXXX",
+                            "totalCreditLimit": "XXXXX",
+                            "totalMonthlyPaymentAmount": "XXXXX"
+                        },
+                        "scoreDetails": [
+                            {
+                                "type": "ERS",
+                                "version": "4.0",
+                                "name": "ERS4.0",
+                                "value": "849",
+                                "scoringElements": [
+                                    {
+                                        "type": "RES",
+                                        "seq": "1",
+                                        "code": "803",
+                                        "description": "Total Utilization"
+                                    },
+                                    {
+                                        "type": "RES",
+                                        "seq": "2",
+                                        "code": "802",
+                                        "description": "Total Credit Exposure"
+                                    },
+                                    {
+                                        "type": "RES",
+                                        "seq": "3",
+                                        "code": "804",
+                                        "description": "Credit Card Utilization"
+                                    }
+                                ]
+                            }
+                        ],
+                        "otherKeyInd": {
+                            "ageOfOldestTrade": "XX",
+                            "numberOfOpenTrades": "X",
+                            "allLinesEVERWritten": "XXX",
+                            "allLinesEVERWrittenIn9Months": "X",
+                            "allLinesEVERWrittenIn6Months": "X"
+                        },
+                        "recentActivities": {
+                            "accountsDeliquent": "X",
+                            "accountsOpened": "X",
+                            "totalInquiries": "X",
+                            "accountsUpdated": "X"
+                        }
+                    }
+                }
+            ]
+        }
+    },
+    "responseKey": "success_credit_report"
+}

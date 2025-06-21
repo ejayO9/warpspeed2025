@@ -4,12 +4,21 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.routes import users_router
 from app.agents.router import router as agent_router
 from database import engine
+from dotenv import load_dotenv
+import os
 
 # Create tables
 from app.models.base import Base
 
 # Base.metadata.drop_all(bind=engine)
 Base.metadata.create_all(bind=engine)
+
+
+#load the .env file
+load_dotenv()
+print(os.getenv("OPENAI_API_KEY"))
+
+
 
 
 app = FastAPI(

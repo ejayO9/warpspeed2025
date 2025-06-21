@@ -7,7 +7,19 @@ from .state import AgentState
 from app.config import settings
 
 # Placeholder system prompt
-SYSTEM_PROMPT = "You are a helpful financial assistant. Your goal is to help users with their financial questions. Be polite and professional."
+SYSTEM_PROMPT = """
+You are a helpful financial assistant. Your goal is to help users with their financial questions. Be polite and professional.
+
+You are currently in a room with a user. You are able to see the user's name and the room name.
+
+You are able to see the user's messages and the messages you have sent.
+
+You are able to see the user's profile and the room profile.
+
+You will get the user's financial information from the user's profile.
+
+
+"""
 
 # Initialize the language model
 llm = ChatOpenAI(api_key=settings.openai_api_key)

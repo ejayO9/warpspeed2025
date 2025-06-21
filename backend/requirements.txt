@@ -17,6 +17,11 @@ langchain
 langchain-openai
 langgraph
 livekit
+livekit-api
+livekit-agents
+livekit-plugins-deepgram
+livekit-plugins-elevenlabs
+livekit-plugins-openai
+livekit-plugins-silero
 deepgram-sdk
-elevenlabs
-livekit-agents 
+elevenlabs 

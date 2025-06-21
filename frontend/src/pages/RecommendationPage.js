@@ -31,11 +31,11 @@ const scenarios = [
 const RecommendationPage = () => {
   return (
     <div className="bg-slate-50 min-h-screen text-foreground font-sans">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 p-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 p-8 h-[calc(100vh-2rem)]">
         {/* Left Column */}
         <div className="lg:col-span-3 space-y-8">
           <div>
-            <h2 className="text-lg font-semibold mb-4 font-serif text-slate-600">Things I fetched.</h2>
+            <h2 className="text-lg font-semibold mb-4 font-serif text-slate-600 text-left">Things I fetched.</h2>
             <div className="space-y-4">
               {documents.map((doc) => (
                 <Card key={doc.title} className="bg-white hover:shadow-lg transition-shadow border-slate-200">
@@ -48,7 +48,7 @@ const RecommendationPage = () => {
             </div>
           </div>
           <div>
-            <h2 className="text-lg font-semibold mt-8 mb-4 font-serif text-slate-600">Other things</h2>
+            <h2 className="text-lg font-semibold mt-8 mb-4 font-serif text-slate-600 text-left">Other things</h2>
             <div className="space-y-4">
               {otherDocuments.map((doc) => (
                 <Card key={doc.title} className="bg-white hover:shadow-lg transition-shadow border-slate-200">
@@ -63,22 +63,22 @@ const RecommendationPage = () => {
         </div>
 
         {/* Middle Column */}
-        <div className="lg:col-span-6 bg-white rounded-2xl shadow-2xl p-8 space-y-8">
+        <div className="lg:col-span-6 bg-white rounded-2xl shadow-lg p-8 space-y-8 h-full text-left">
           <h1 className="text-4xl font-bold font-serif text-slate-800">Recommendation</h1>
-          <Card className="border-none shadow-none">
+          <Card className="border border-slate-100 bg-slate-50 rounded-2xl p-6 shadow-sm">
             <CardHeader className="p-0">
               <CardTitle className="font-serif text-slate-700">Summary</CardTitle>
             </CardHeader>
             <CardContent className="p-0 mt-4">
-              <div className="prose prose-slate max-w-none">
-                <p>
+              <div className="prose prose-slate max-w-none text-left">
+                <p className="text-slate-700">
                   Pramod (62, retired) wants to buy a ₹45 L house. He has a large ₹2 Cr investment portfolio and ₹20k monthly rental income. Assuming an estimated monthly income of ₹1.2 L (rental + investment yield), and keeping a ₹20 L emergency buffer, we compare several options: (A) high down payment of ₹30 L + ₹15 L home loan → EMI ~₹18.6k but ties up more cash; (B) moderate down payment ₹22.5 L + ₹22.5 L home loan over 8 years at ~9% → EMI ~₹31.4k, finishes by age ~70, retains buffer and corpus; (C) all-cash uses ₹45 L but reduces corpus significantly; (D) loan-against-securities is affordable EMI but high interest and market risk. Option B is recommended: EMI fits comfortably within income, tenure aligns with age policies, and preserves buffer/investment. Next steps: verify lender acceptance of rental/investment income, prepare documentation, consider co-applicant if needed, and lock rates or plan prepayments if extra cash arises.
                 </p>
               </div>
             </CardContent>
           </Card>
 
-          <h2 className="text-2xl font-bold font-serif text-slate-800">Scenarios</h2>
+          <h2 className="text-2xl font-bold font-serif text-slate-800 text-left">Scenarios</h2>
           <Card className="border-slate-200">
             <Table>
               <TableHeader>

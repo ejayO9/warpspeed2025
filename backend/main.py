@@ -2,12 +2,15 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.routes import users_router
+from app.agents.router import router as agent_router
 from database import engine
 
 # Create tables
 from app.models.base import Base
 
+# Base.metadata.drop_all(bind=engine)
 Base.metadata.create_all(bind=engine)
+
 
 app = FastAPI(
     title="FinBuddy API",
@@ -27,6 +30,7 @@ app.add_middleware(
 )
 
 app.include_router(users_router, prefix="/api/v1/users", tags=["users"])
+app.include_router(agent_router, prefix="/api/v1/agent", tags=["agent"])
 
 
 @app.get("/")

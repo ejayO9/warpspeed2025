@@ -10,7 +10,7 @@ function App() {
     <Router>
       <div className="App">
         <nav className="bg-white shadow-sm p-4">
-          <div className="max-w-7xl mx-auto flex gap-4">
+          <div className="max-w-7xl mx-auto flex justify-center items-center gap-12">
             <Link to="/" className="text-slate-700 hover:text-purple-600 transition-colors">
               Recommendation
             </Link>

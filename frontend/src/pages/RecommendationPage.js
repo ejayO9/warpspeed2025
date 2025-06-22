@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui/table';
 import { Banknote, Landmark, LineChart, FileText, Handshake } from 'lucide-react';
 import ChatPanel from '../components/ChatPanel';
+import BankStatementsModal from '../components/BankStatementsModal';
 
 const documents = [
   { title: 'Bank statements', icon: <Landmark size={24} /> },
@@ -29,6 +30,33 @@ const scenarios = [
 ];
 
 const RecommendationPage = () => {
+  const [isBankStatementsModalOpen, setIsBankStatementsModalOpen] = useState(false);
+  const [scrollTarget, setScrollTarget] = useState(null);
+
+  const handleDocumentClick = (docTitle) => {
+    let targetSection = null;
+    
+    switch (docTitle) {
+      case 'Bank statements':
+        targetSection = 'balance-history';
+        break;
+      case 'Stocks':
+        targetSection = 'equity-portfolio';
+        break;
+      case 'Mutual funds':
+        targetSection = 'mutual-funds';
+        break;
+      case 'Credit report':
+        targetSection = 'credit-report';
+        break;
+      default:
+        targetSection = null;
+    }
+    
+    setScrollTarget(targetSection);
+    setIsBankStatementsModalOpen(true);
+  };
+
   return (
     <div className="bg-slate-50 min-h-screen text-foreground font-sans">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 p-8 h-[calc(100vh-2rem)]">
@@ -38,7 +66,11 @@ const RecommendationPage = () => {
             <h2 className="text-lg font-semibold mb-4 font-serif text-slate-600 text-left">Things I fetched.</h2>
             <div className="space-y-4">
               {documents.map((doc) => (
-                <Card key={doc.title} className="bg-white hover:shadow-lg transition-shadow border-slate-200">
+                <Card 
+                  key={doc.title} 
+                  className="bg-white hover:shadow-lg transition-shadow border-slate-200 cursor-pointer"
+                  onClick={() => handleDocumentClick(doc.title)}
+                >
                   <CardContent className="flex items-center gap-4 p-4">
                     {doc.icon}
                     <span className="font-medium text-slate-700">{doc.title}</span>
@@ -51,7 +83,11 @@ const RecommendationPage = () => {
             <h2 className="text-lg font-semibold mt-8 mb-4 font-serif text-slate-600 text-left">Other things</h2>
             <div className="space-y-4">
               {otherDocuments.map((doc) => (
-                <Card key={doc.title} className="bg-white hover:shadow-lg transition-shadow border-slate-200">
+                <Card 
+                  key={doc.title} 
+                  className="bg-white hover:shadow-lg transition-shadow border-slate-200 cursor-pointer"
+                  onClick={() => handleDocumentClick(doc.title)}
+                >
                   <CardContent className="flex items-center gap-4 p-4">
                     {doc.icon}
                     <span className="font-medium text-slate-700">{doc.title}</span>
@@ -114,6 +150,13 @@ const RecommendationPage = () => {
             <ChatPanel />
         </div>
       </div>
+
+      {/* Bank Statements Modal */}
+      <BankStatementsModal 
+        isOpen={isBankStatementsModalOpen}
+        onClose={() => setIsBankStatementsModalOpen(false)}
+        scrollTarget={scrollTarget}
+      />
     </div>
   );
 };

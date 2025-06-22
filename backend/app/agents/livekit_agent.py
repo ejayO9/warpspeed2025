@@ -57,9 +57,6 @@ class FinancialAssistant(Agent):
         self.call_start_time = ""
         self.call_status = "ACTIVE"
         
-        # Room reference for sending data messages
-        self.room = None
-        
         logger.info(f"FinancialAssistant initialized with session ID: {self.session_id}, user_id: {self.user_id}")
 
 async def entrypoint(ctx: JobContext):
@@ -82,9 +79,6 @@ async def entrypoint(ctx: JobContext):
 
     # Create our financial assistant
     financial_assistant = FinancialAssistant(user_id=user_id)
-    
-    # Store room reference for data messages
-    financial_assistant.room = ctx.room
 
     # Create session with standard OpenAI LLM
     session = AgentSession(
@@ -158,26 +152,6 @@ async def entrypoint(ctx: JobContext):
                         # Store the current phase if available
                         if "current_phase" in chunk["conversation_agent"]:
                             assistant.current_phase = chunk["conversation_agent"]["current_phase"]
-                        
-                        # Check if user confirmed analysis
-                        if chunk["conversation_agent"].get("user_confirmed_analysis", False):
-                            logger.info(f"🔄 User confirmed analysis - sending redirect signal")
-                            
-                            # Send data message to frontend
-                            if hasattr(assistant, 'room') and assistant.room:
-                                try:
-                                    # Send redirect signal as data message
-                                    data_packet = json.dumps({
-                                        "type": "redirect",
-                                        "redirect_to": "/analysis"
-                                    })
-                                    await assistant.room.local_participant.publish_data(
-                                        data_packet.encode('utf-8'),
-                                        reliable=True
-                                    )
-                                    logger.info(f"✅ Redirect signal sent to frontend for /analysis")
-                                except Exception as e:
-                                    logger.error(f"❌ Failed to send redirect signal: {str(e)}")
                         break
                 elif "analysis_agent" in chunk:
                     # Analysis results from Agent2

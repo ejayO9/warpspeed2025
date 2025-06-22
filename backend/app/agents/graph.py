@@ -13,12 +13,15 @@ from app.pydanticModels import financial_analysis as financial_analysis_schema
 from pydantic import BaseModel, Field
 from typing import Optional
 from langchain_core.output_parsers import PydanticOutputParser
+from app.services.websocket_manager import manager
+import asyncio
 
 from .state import AgentState
 from app.config import settings
 
 # System prompts for both agents
 AGENT1_SYSTEM_PROMPT = """You are FinBuddy, a friendly financial advisor. Your goal is to understand the user's financial situation before analyzing loan options.
+Talk in a concise manner and don't be too verbose.
 
 Please collect the following information naturally in conversation:
 1. Source of income - Ask about salary, other income sources, and any expected changes (job change, salary hike, bonus, or income dip)
@@ -36,7 +39,7 @@ Current conversation phase: {current_phase}
 Information collected so far: {chat_info}
 """
 
-AGENT2_SYSTEM_PROMPT = """You are a financial analysis expert. When provided with a user’s profile, financial data, loan offers, and requirements, produce a comprehensive, human-readable loan analysis in the following structured format. Use a professional, clear, and concise tone, explaining any necessary jargon. Compute key metrics (monthly income, existing obligations, liquidity after buffer, credit score, DTI, EMI) and generate multiple scenarios. For each scenario, include EMI calculations, pros, cons, and risks. At the end, give a summary recommendation, major risk flags, and next steps.
+AGENT2_SYSTEM_PROMPT = """You are a financial analysis expert. When provided with a user's profile, financial data, loan offers, and requirements, produce a comprehensive, human-readable loan analysis in the following structured format. Use a professional, clear, and concise tone, explaining any necessary jargon. Compute key metrics (monthly income, existing obligations, liquidity after buffer, credit score, DTI, EMI) and generate multiple scenarios. For each scenario, include EMI calculations, pros, cons, and risks. At the end, give a summary recommendation, major risk flags, and next steps.
 
 Template for output (fill in actual values):
 [Brief context: purpose and amount]
@@ -81,11 +84,11 @@ Instructions:
    • Cons: upfront cash required, effects on buffer, longer tenure, higher interest, etc.
    • Risks: age/tenure policy issues, income volatility or insufficiency, buffer depletion, credit impact.
 - Rank scenarios according to cost, cash-flow fit, and risk tolerance.
-- In “Recommendation,” state the top option with rationale referencing computed metrics.
-- List “Major risk flags” that apply overall (e.g., high DTI, low buffer, credit constraints, upcoming spends).
-- In “Next steps,” advise actions: verify lender policy, prepare documents, consider co-applicant, plan credit improvement or delay, lock rate, set reminders.
+- In "Recommendation," state the top option with rationale referencing computed metrics.
+- List "Major risk flags" that apply overall (e.g., high DTI, low buffer, credit constraints, upcoming spends).
+- In "Next steps," advise actions: verify lender policy, prepare documents, consider co-applicant, plan credit improvement or delay, lock rate, set reminders.
 
-Whenever you receive the user’s data, apply this template exactly, replacing placeholders with computed values and narrative. Ensure the output is easy to read, with bullet points and short paragraphs.```
+Whenever you receive the user's data, apply this template exactly, replacing placeholders with computed values and narrative. Ensure the output is easy to read, with bullet points and short paragraphs.```
 
 """
 
@@ -248,9 +251,19 @@ I have gathered all the information I need. Shall I analyze your loan options no
     # Check if this is a response after user confirmed
     if messages and isinstance(messages[-1], HumanMessage):
         last_user_message = messages[-1].content.lower()
-        if current_phase == 'confirming_analysis' and any(word in last_user_message for word in ['yes', 'sure', 'okay', 'proceed', 'go ahead', 'analyze']):
-            # Mark that user confirmed - this will be detected by the streaming logic
-            updates["user_confirmed_analysis"] = True
+        confirmation_words = ['yes', 'sure', 'okay', 'proceed', 'go ahead', 'analyze']
+        
+        if current_phase == 'confirming_analysis' and any(word in last_user_message for word in confirmation_words):
+            # Send WebSocket redirect if we have a user_id
+            user_id = state.get('user_id')
+            if user_id:
+                # Use asyncio.create_task to avoid event loop conflict
+                try:
+                    # Schedule the redirect to be sent asynchronously
+                    asyncio.create_task(manager.send_redirect(str(user_id), "/analysis"))
+                    print(f"✅ Scheduled WebSocket redirect to /analysis for user {user_id}")
+                except Exception as e:
+                    print(f"❌ Error scheduling redirect: {e}")
     
     return updates
 
@@ -399,10 +412,10 @@ app = workflow.compile(checkpointer=memory)
 # Add a streaming method to the app
 def stream_chat(messages: list, config: dict, user_id: int = None):
     """Stream chat responses."""
-    # Prepare the input for the graph
+    # Prepare the input for the graph - only provide new messages and user_id
+    # Let LangGraph load existing state from memory (current_phase, chat_info, etc.)
     inputs = {
         "messages": messages,
-        "current_phase": "collecting_info",
         "user_id": user_id
     }
     
@@ -422,10 +435,6 @@ def stream_chat(messages: list, config: dict, user_id: int = None):
                     "current_phase": chunk.get("current_phase", "collecting_info")
                 }
             }
-            
-            # Include user_confirmed_analysis if present
-            if chunk.get("user_confirmed_analysis", False):
-                output["conversation_agent"]["user_confirmed_analysis"] = True
             
             # Include car_price if present
             if "car_price" in chunk:

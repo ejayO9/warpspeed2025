@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 from fastapi.responses import JSONResponse, StreamingResponse
 from pydantic import BaseModel
 import asyncio
@@ -12,6 +12,7 @@ from langchain_core.messages import HumanMessage
 from livekit.api.access_token import AccessToken
 from livekit import api
 import asyncio
+from app.services.websocket_manager import manager
 
 router = APIRouter()
 
@@ -24,6 +25,48 @@ class ChatRequest(BaseModel):
     session_id: str
     user_id: int  # Add user_id to the request
 
+class TestRedirectRequest(BaseModel):
+    user_id: str
+    redirect_to: str
+
+@router.websocket("/ws/{user_id}")
+async def websocket_endpoint(websocket: WebSocket, user_id: str):
+    """WebSocket endpoint for real-time communication"""
+    await manager.connect(websocket, user_id)
+    try:
+        # Send a welcome message to confirm connection
+        await websocket.send_text(json.dumps({
+            "type": "connection",
+            "message": "Connected successfully"
+        }))
+        
+        # Keep connection alive - listen for any incoming messages or disconnection
+        while True:
+            try:
+                # Wait for messages from client (or disconnection)
+                message = await websocket.receive_text()
+                # Echo back any messages received
+                await websocket.send_text(f"Echo: {message}")
+            except WebSocketDisconnect:
+                break  # Exit the loop when client disconnects
+                
+    except WebSocketDisconnect:
+        pass  # Normal disconnection
+    except Exception as e:
+        logging.error(f"WebSocket error for user {user_id}: {e}")
+    finally:
+        manager.disconnect(websocket, user_id)
+        logging.info(f"User {user_id} disconnected")
+
+@router.post("/test-redirect")
+async def test_redirect(request: TestRedirectRequest):
+    """Test endpoint to verify redirect functionality"""
+    await manager.send_redirect(request.user_id, request.redirect_to)
+    return JSONResponse(content={
+        "status": "success",
+        "message": f"Redirect sent to user {request.user_id} for {request.redirect_to}"
+    })
+
 @router.post("/chat")
 async def chat(request: ChatRequest):
     """
@@ -34,6 +77,8 @@ async def chat(request: ChatRequest):
         session_id = str(uuid4())
 
     config = {"configurable": {"thread_id": session_id}}
+    
+    # Create the user message - LangGraph will handle conversation history automatically
     messages = [HumanMessage(content=request.message)]
 
     async def event_stream():
@@ -43,11 +88,6 @@ async def chat(request: ChatRequest):
                 # Message from conversation agent
                 content = chunk["conversation_agent"]["messages"][-1].content
                 yield f"data: {json.dumps({'content': content, 'agent': 'conversation'})}\n\n"
-                
-                # Check if user confirmed analysis
-                if chunk["conversation_agent"].get("user_confirmed_analysis", False):
-                    # Send redirect event
-                    yield f"data: {json.dumps({'type': 'redirect', 'redirect_to': '/analysis'})}\n\n"
                     
             elif "analysis_agent" in chunk:
                 # Message from analysis agent

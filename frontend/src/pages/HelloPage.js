@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -13,7 +13,7 @@ import VoiceAssistant from '../components/VoiceAssistant';
 import MicController from '../components/MicController';
 import { API_URL, LIVEKIT_URL } from '../config';
 
-const HelloPage = () => {
+const HelloPage = ({ userId }) => {
   const navigate = useNavigate();
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
@@ -23,9 +23,6 @@ const HelloPage = () => {
   const [roomName, setRoomName] = useState('');
   const [isMicMuted, setIsMicMuted] = useState(false);
   const messagesEndRef = useRef(null);
-
-  // A unique user ID for the session
-  const userId = useMemo(() => 'user-' + Math.random().toString(36).substring(7), []);
 
   // Auto-scroll to bottom when new messages arrive
   const scrollToBottom = () => {
@@ -48,8 +45,8 @@ const HelloPage = () => {
     setInput('');
     setIsLoading(true);
 
-    const assistantMessage = { sender: 'assistant', text: '', timestamp: new Date() };
-    setMessages((prev) => [...prev, assistantMessage]);
+    // Don't create assistant message placeholder immediately
+    // It will be created when we start receiving the response
 
     try {
       const response = await fetch(`${API_URL}/agent/chat`, {
@@ -57,14 +54,15 @@ const HelloPage = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           message: currentInput,
-          session_id: userId, // Using userId as session_id for consistency
-          user_id: 1 // TODO: Replace with actual user ID from authentication
+          session_id: String(userId), // Convert to string for session_id
+          user_id: 1 // Use consistent user_id: 1
         }),
       });
 
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
       let buffer = '';
+      let assistantMessageCreated = false;
 
       while (true) {
         const { value, done } = await reader.read();
@@ -80,21 +78,21 @@ const HelloPage = () => {
             try {
               const data = JSON.parse(part.substring(6));
               
-              // Handle redirect event
-              if (data.type === 'redirect' && data.redirect_to) {
-                console.log('Redirect signal received:', data.redirect_to);
-                navigate(data.redirect_to);
-                return;
-              }
-              
               // Handle regular message
               if (data.content) {
-                setMessages((prev) => {
-                  const newMessages = [...prev];
-                  // Replace the content instead of appending for complete messages
-                  newMessages[newMessages.length - 1].text = data.content;
-                  return newMessages;
-                });
+                if (!assistantMessageCreated) {
+                  // Create assistant message on first content received
+                  const assistantMessage = { sender: 'assistant', text: data.content, timestamp: new Date() };
+                  setMessages((prev) => [...prev, assistantMessage]);
+                  assistantMessageCreated = true;
+                } else {
+                  // Update existing assistant message
+                  setMessages((prev) => {
+                    const newMessages = [...prev];
+                    newMessages[newMessages.length - 1].text = data.content;
+                    return newMessages;
+                  });
+                }
               }
             } catch (e) {
               console.error('Error parsing JSON:', part);
@@ -108,20 +106,19 @@ const HelloPage = () => {
         try {
           const data = JSON.parse(buffer.substring(6));
           
-          // Handle redirect event
-          if (data.type === 'redirect' && data.redirect_to) {
-            console.log('Redirect signal received from final buffer:', data.redirect_to);
-            navigate(data.redirect_to);
-            return;
-          }
-          
           // Handle regular message
           if (data.content) {
-            setMessages((prev) => {
-              const newMessages = [...prev];
-              newMessages[newMessages.length - 1].text = data.content;
-              return newMessages;
-            });
+            if (!assistantMessageCreated) {
+              // Create assistant message if none was created yet
+              const assistantMessage = { sender: 'assistant', text: data.content, timestamp: new Date() };
+              setMessages((prev) => [...prev, assistantMessage]);
+            } else {
+              setMessages((prev) => {
+                const newMessages = [...prev];
+                newMessages[newMessages.length - 1].text = data.content;
+                return newMessages;
+              });
+            }
           }
         } catch (e) {
           console.error('Error parsing final buffer:', buffer);
@@ -129,11 +126,13 @@ const HelloPage = () => {
       }
     } catch (error) {
       console.error('Error sending message:', error);
-      setMessages((prev) => {
-        const newMessages = [...prev];
-        newMessages[newMessages.length - 1].text = "Sorry, I'm having trouble connecting. Error: " + error.message;
-        return newMessages;
-      });
+      // Create error message as assistant response
+      const errorMessage = { 
+        sender: 'assistant', 
+        text: "Sorry, I'm having trouble connecting. Error: " + error.message,
+        timestamp: new Date()
+      };
+      setMessages((prev) => [...prev, errorMessage]);
     } finally {
       console.log('Resetting loading state');
       setIsLoading(false);
@@ -162,7 +161,7 @@ const HelloPage = () => {
       console.log('LiveKit URL:', LIVEKIT_URL);
 
       // Get token to join the room (agent will be automatically dispatched by LiveKit)
-      const tokenRes = await axios.get(`${API_URL}/agent/livekit-token?user_id=${userId}&room_name=${newRoomName}`);
+      const tokenRes = await axios.get(`${API_URL}/agent/livekit-token?user_id=1&room_name=${newRoomName}`);
       console.log('Received token:', tokenRes.data.token);
       
       setLiveKitToken(tokenRes.data.token);

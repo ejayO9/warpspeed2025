@@ -13,5 +13,4 @@ class AgentState(TypedDict):
     analysis_result: Optional[Dict[str, Any]]
     current_phase: str  # "collecting_info", "confirming_analysis", "analyzing", "discussing_results"
     car_price: Optional[float]  # Extracted from conversation
-    all_info_collected: bool  # Flag to track if all 4 pieces of info are collected
-    user_confirmed_analysis: Optional[bool]  # Flag to track if user confirmed to proceed 
+    all_info_collected: bool  # Flag to track if all 4 pieces of info are collected 

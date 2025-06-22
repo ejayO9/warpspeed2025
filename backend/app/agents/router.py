@@ -43,6 +43,12 @@ async def chat(request: ChatRequest):
                 # Message from conversation agent
                 content = chunk["conversation_agent"]["messages"][-1].content
                 yield f"data: {json.dumps({'content': content, 'agent': 'conversation'})}\n\n"
+                
+                # Check if user confirmed analysis
+                if chunk["conversation_agent"].get("user_confirmed_analysis", False):
+                    # Send redirect event
+                    yield f"data: {json.dumps({'type': 'redirect', 'redirect_to': '/analysis'})}\n\n"
+                    
             elif "analysis_agent" in chunk:
                 # Message from analysis agent
                 content = chunk["analysis_agent"]["messages"][-1].content

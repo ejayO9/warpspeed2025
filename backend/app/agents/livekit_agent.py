@@ -3,6 +3,7 @@ import sys
 import os
 from pathlib import Path
 from datetime import datetime, timedelta
+import json
 
 # Add the backend directory to the Python path
 backend_dir = Path(__file__).parent.parent.parent
@@ -13,6 +14,7 @@ from livekit import agents
 from livekit.agents import JobContext, WorkerOptions, AgentSession, Agent
 from livekit.agents import ConversationItemAddedEvent
 from livekit.plugins import deepgram, elevenlabs, openai, silero
+from livekit import rtc  # Add this import for data messages
 from app.config import settings
 from app.agents.graph import stream_chat
 from langchain_core.messages import HumanMessage, SystemMessage
@@ -55,6 +57,9 @@ class FinancialAssistant(Agent):
         self.call_start_time = ""
         self.call_status = "ACTIVE"
         
+        # Room reference for sending data messages
+        self.room = None
+        
         logger.info(f"FinancialAssistant initialized with session ID: {self.session_id}, user_id: {self.user_id}")
 
 async def entrypoint(ctx: JobContext):
@@ -77,6 +82,9 @@ async def entrypoint(ctx: JobContext):
 
     # Create our financial assistant
     financial_assistant = FinancialAssistant(user_id=user_id)
+    
+    # Store room reference for data messages
+    financial_assistant.room = ctx.room
 
     # Create session with standard OpenAI LLM
     session = AgentSession(
@@ -84,7 +92,10 @@ async def entrypoint(ctx: JobContext):
             model="nova-2",
             api_key=settings.deepgram_api_key
         ),
-        llm=openai.LLM(model="gpt-4o-mini"),  # Standard OpenAI LLM
+        llm=openai.LLM(
+            model="gpt-4o-mini",
+            api_key=settings.openai_api_key
+        ),  # Standard OpenAI LLM
         tts=elevenlabs.TTS(
             api_key=settings.elevenlabs_api_key,
             voice_id="NeDTo4pprKj2ZwuNJceH",
@@ -147,6 +158,26 @@ async def entrypoint(ctx: JobContext):
                         # Store the current phase if available
                         if "current_phase" in chunk["conversation_agent"]:
                             assistant.current_phase = chunk["conversation_agent"]["current_phase"]
+                        
+                        # Check if user confirmed analysis
+                        if chunk["conversation_agent"].get("user_confirmed_analysis", False):
+                            logger.info(f"🔄 User confirmed analysis - sending redirect signal")
+                            
+                            # Send data message to frontend
+                            if hasattr(assistant, 'room') and assistant.room:
+                                try:
+                                    # Send redirect signal as data message
+                                    data_packet = json.dumps({
+                                        "type": "redirect",
+                                        "redirect_to": "/analysis"
+                                    })
+                                    await assistant.room.local_participant.publish_data(
+                                        data_packet.encode('utf-8'),
+                                        reliable=True
+                                    )
+                                    logger.info(f"✅ Redirect signal sent to frontend for /analysis")
+                                except Exception as e:
+                                    logger.error(f"❌ Failed to send redirect signal: {str(e)}")
                         break
                 elif "analysis_agent" in chunk:
                     # Analysis results from Agent2
@@ -226,6 +257,7 @@ if __name__ == "__main__":
         ws_url=settings.livekit_url,
         api_key=settings.livekit_api_key,
         api_secret=settings.livekit_api_secret,
+        num_idle_processes=2
     )
     
     logger.info("🚀 Starting LiveKit agent...")

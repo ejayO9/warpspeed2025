@@ -52,7 +52,7 @@ Format your analysis in a clear, structured manner.
 
 # Initialize the language model
 llm = ChatOpenAI(
-    model="gpt-4-turbo-preview",
+    model="gpt-4o-mini",
     api_key=settings.openai_api_key,
     temperature=0.7
 )
@@ -196,6 +196,23 @@ def conversation_agent(state: AgentState) -> Dict[str, Any]:
     if all_collected and "shall i analyze" in response.content.lower():
         updates["current_phase"] = "confirming_analysis"
     
+    # Force confirmation message if all info collected but not yet confirming
+    if all_collected and current_phase == 'collecting_info' and not any(phrase in response.content.lower() for phrase in ["shall i analyze", "should i analyze", "ready to analyze"]):
+        # Override the response to ask for confirmation
+        confirmation_msg = f"""{response.content}
+
+I have gathered all the information I need. Shall I analyze your loan options now?"""
+        response = AIMessage(content=confirmation_msg)
+        updates["messages"] = [response]
+        updates["current_phase"] = "confirming_analysis"
+    
+    # Check if this is a response after user confirmed
+    if messages and isinstance(messages[-1], HumanMessage):
+        last_user_message = messages[-1].content.lower()
+        if current_phase == 'confirming_analysis' and any(word in last_user_message for word in ['yes', 'sure', 'okay', 'proceed', 'go ahead', 'analyze']):
+            # Mark that user confirmed - this will be detected by the streaming logic
+            updates["user_confirmed_analysis"] = True
+    
     return updates
 
 def fetch_user_data(user_id: int, db: Session) -> tuple:
@@ -307,7 +324,7 @@ def route_agent(state: AgentState) -> str:
     # Check if user confirmed analysis
     if messages and isinstance(messages[-1], HumanMessage):
         last_message = messages[-1].content.lower()
-        if current_phase == 'confirming_analysis' and any(word in last_message for word in ['yes', 'sure', 'okay', 'proceed', 'go ahead']):
+        if current_phase == 'confirming_analysis' and any(word in last_message for word in ['yes', 'sure', 'okay', 'proceed', 'go ahead', 'analyze']):
             return 'analysis_agent'
     
     # Default to end the conversation (which maps to END)
@@ -350,4 +367,29 @@ def stream_chat(messages: list, config: dict, user_id: int = None):
         "user_id": user_id
     }
     
-    return app.stream(inputs, config=config) 
+    # Use stream_mode='values' to get the full state after each node
+    for chunk in app.stream(inputs, config=config, stream_mode="values"):
+        # The chunk now contains the full state
+        # We need to transform it to match the expected format
+        if "messages" in chunk and chunk["messages"]:
+            last_message = chunk["messages"][-1]
+            
+            # Yield the conversation agent output format
+            output = {
+                "conversation_agent": {
+                    "messages": [last_message],
+                    "chat_info": chunk.get("chat_info", {}),
+                    "all_info_collected": chunk.get("all_info_collected", False),
+                    "current_phase": chunk.get("current_phase", "collecting_info")
+                }
+            }
+            
+            # Include user_confirmed_analysis if present
+            if chunk.get("user_confirmed_analysis", False):
+                output["conversation_agent"]["user_confirmed_analysis"] = True
+            
+            # Include car_price if present
+            if "car_price" in chunk:
+                output["conversation_agent"]["car_price"] = chunk["car_price"]
+                
+            yield output 

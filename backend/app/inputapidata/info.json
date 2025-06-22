@@ -1,0 +1,232 @@
+{
+    "personalProfile": {
+      "name": "Pramod",
+      "age": 62,
+      "occupation": "Retired",
+      "dependents": 1,
+      "totalIncomeMonthly": {
+        "rental": 20000,
+        "estimatedInvestmentYield": 100000,
+        "total": 120000
+      },
+      "employmentStability": "N/A (retired)",
+      "emergencyBufferPreference": "Keep at least ₹20 L liquid",
+      "riskTolerance": "Moderate"
+    },
+    "creditScoreAnalysis": {
+      "scoreValue": 780,
+      "scoreInterpretation": "Good-to-Excellent (likely strong eligibility for loans, depending on age/tenure constraints)",
+      "scoringElements": [
+        { "description": "Total Utilization", "note": "Assume utilization low given no major existing debt" },
+        { "description": "Credit Exposure", "note": "Low existing exposure" }
+      ],
+      "notes": [
+        "Assumed credit score 780 for demo. In reality, fetch actual score.",
+        "No existing loans or EMIs assumed."
+      ]
+    },
+    "accountSummaryAnalysis": {
+      "existingLiabilities": {
+        "noOfActiveAccounts": 0,
+        "totalOutstanding": 0
+      },
+      "liquidity": {
+        "bankBalances": "Not provided; assumed covered by investments/liquid assets",
+        "investmentPortfolio": 20000000,
+        "usableLiquidityAfterBuffer": 0
+      },
+      "notes": [
+        "Bank statement not detailed here; we assume investments are primary liquid source."
+      ]
+    },
+    "otherKeyIndicators": {
+      "ageOfOldestTrade": null,
+      "numberOfOpenTrades": 0,
+      "recentInquiries": 0,
+      "notes": [
+        "No existing credit accounts assumed; inquiries = 0.",
+        "Retired status means no salary account inflow, but rental + investment yields counted."
+      ]
+    },
+    "recentActivityAnalysis": {
+      "accountsOpenedLast6Months": 0,
+      "delinquentAccounts": 0,
+      "notes": [
+        "No recent credit activity assumed."
+      ]
+    },
+    "derivedMetrics": {
+      "debtToIncomeRatioIfLoan": null,
+      "utilizationRatio": 0,
+      "monthlySurplusAfterExistingObligations": 120000,
+      "maxAffordableEMI": 60000
+    },
+    "riskFlags": [
+      "Age 62: loan tenure may be limited by lender policy (often max age at loan maturity ~75). May require co-applicant or shorter tenure.",
+      "Retired: no salary income; banks typically consider rental and investment yield, but policies vary.",
+      "Large investment portfolio: liquidation or loan-against-securities are options but have their own considerations."
+    ],
+    "scenarios": [
+      {
+        "scenarioName": "Option A: High down payment (₹30 L) + home loan ₹15 L",
+        "assumptions": {
+          "downPayment": 3000000,
+          "loanAmount": 1500000,
+          "interestRate": 8.5,
+          "tenureYears": 10
+        },
+        "calculations": {
+          "estimatedEMI": 18600,
+          "totalInterestPayable": 720000,
+          "DTI": "≈15.5% (EMI 18600 / income 120000)",
+          "remainingLiquidInvestments": 17000000,
+          "bufferAfterDownPayment": "20000000 - 3000000 - 2000000"
+        },
+        "pros": [
+          "EMI (₹18.6k) well within safe EMI limit of ₹60k.",
+          "Keeps large part of portfolio intact.",
+          "Low total interest (≈₹7.2 L).",
+          "DTI remains low (~15.5%), comfortable for retired profile."
+        ],
+        "cons": [
+          "Requires ₹30 L upfront; must liquidate part of investments.",
+          "Loan tenure of 10 years may run until age ~72; check lender age-limit policies.",
+          "Maintaining ₹20 L emergency buffer means liquidating ₹30 L + buffer ₹20 L."
+        ],
+        "riskAssessment": "Moderate-low risk if lender allows 10-year tenure; buffer preserved; EMI affordable."
+      },
+      {
+        "scenarioName": "Option B: Moderate down payment (₹22.5 L) + home loan ₹22.5 L",
+        "assumptions": {
+          "downPayment": 2250000,
+          "loanAmount": 2250000,
+          "interestRate": 9.0,
+          "tenureYears": 8
+        },
+        "calculations": {
+          "estimatedEMI": 31400,
+          "totalInterestPayable": 1100000,
+          "DTI": "≈26% (31400 / 120000)",
+          "remainingLiquidInvestments": 17750000,
+          "bufferAfterDownPayment": "20000000 - 2250000 - 2000000"
+        },
+        "pros": [
+          "Lower upfront cash than Option A.",
+          "EMI (~₹31.4k) still well below safe EMI limit.",
+          "Keeps buffer intact.",
+          "Shorter tenure (8 years) finishes by age ~70, closer to many lender age limits."
+        ],
+        "cons": [
+          "Higher total interest (~₹11 L).",
+          "DTI higher (~26%) but within moderate range.",
+          "Loan policies for retired with 8-year tenure still need verification."
+        ],
+        "riskAssessment": "Moderate risk; EMI affordable but tenure must fit lender age criteria."
+      },
+      {
+        "scenarioName": "Option C: All-cash purchase (₹45 L)",
+        "assumptions": {
+          "downPayment": 4500000,
+          "loanAmount": 0,
+          "interestRate": null,
+          "tenureYears": 0
+        },
+        "calculations": {
+          "estimatedEMI": 0,
+          "totalInterestPayable": 0,
+          "DTI": "0%",
+          "remainingLiquidInvestments": 15500000,
+          "bufferAfterDownPayment": "20000000 - 4500000 - 2000000 "
+        },
+        "pros": [
+          "No debt/EMI burden.",
+          "No dependency on lender age policies.",
+          "Saves total interest costs."
+        ],
+        "cons": [
+          "Requires liquidating ₹45 L, significantly reducing investment corpus.",
+          "May compromise future income yield from investments.",
+          "Buffer of ₹20 L must still be retained; reduces effective liquidity significantly."
+        ],
+        "riskAssessment": "Low credit risk (no loan), but reduces portfolio size; consider if investment yield lost outweighs interest cost savings."
+      },
+      {
+        "scenarioName": "Option D: Loan-against-securities (LAS) for part funding",
+        "assumptions": {
+          "loanAgainstSecuritiesPercent": 50,
+          "loanAmount": 10000000, 
+          "interestRate": 12.0,
+          "tenureYears": 5
+        },
+        "calculations": {
+          "estimatedEMI": 22264,
+          "totalInterestPayable": 3360000,
+          "DTI": "≈18.5% (22264 / 120000)",
+          "remainingLiquidInvestments": 20000000, 
+          "bufferAfterDownPayment": "20000000 - 0 - 2000000"
+        },
+        "pros": [
+          "No need to liquidate investments; portfolio remains invested.",
+          "EMI (~₹22.3k) affordable.",
+          "Buffer untouched.",
+          "Short tenure (5 years)."
+        ],
+        "cons": [
+          "Higher interest rate (~12%).",
+          "Risk of margin call if market value falls; might need to top up collateral.",
+          "Total interest cost (~₹33.6 L) is high compared to home loan offers."
+        ],
+        "riskAssessment": "Higher financial risk due to market volatility; generally not recommended for essential purchase financing."
+      }
+    ],
+    "recommendations": [
+      {
+        "recommendedScenario": "Option B: Moderate down payment + home loan ₹22.5 L",
+        "rationale": [
+          "Balances upfront cash and retains substantial investment corpus.",
+          "EMI (~₹31.4k) is well within Pramod’s monthly income of ₹1.2 L.",
+          "Shorter tenure (~8 years) likely to finish by age ~70, easing lender age-limit concerns.",
+          "Preserves emergency buffer of ₹20 L."
+        ],
+        "nextSteps": [
+          "Confirm lender age-policy for an 8-year home loan at ~9% rate based on rental + investment income.",
+          "Prepare documents: proof of rental income, investment statements, existing bank statements, ID proofs.",
+          "Consider co-applicant if lender requires younger co-borrower to extend tenure; spouse could co-apply if eligible.",
+          "Lock in rate promptly if market outlook suggests rising rates.",
+          "Plan partial prepayment if extra cash flows arise to reduce interest further."
+        ]
+      }
+    ],
+    "sensitivityAnalyses": [
+      {
+        "type": "Interest Rate Shock",
+        "details": {
+          "scenario": "Option B",
+          "rateIncrease": "1%",
+          "newInterestRate": 10.0,
+          "newEMI": "≈33,800",
+          "impact": "EMI rises by ~₹1.4k/month; DTI becomes ~28%; still within safe limit but buffer usage slightly higher interest burden."
+        }
+      },
+      {
+        "type": "Down Payment Adjustment",
+        "details": {
+          "fromScenario": "Option B",
+          "increaseDownPaymentBy": "₹5 L",
+          "newDownPayment": 2750000,
+          "newLoanAmount": 1750000,
+          "newEMI": "≈24,400 (at 9% for 8 years)",
+          "impact": "EMI drops, total interest reduces; but liquidating extra ₹5 L reduces portfolio; evaluate trade-off."
+        }
+      }
+    ],
+    "notes": [
+      "Lender age-limit: many banks cap loan maturity age around 75; with age 62, an 8-year tenure (finishing at 70) is preferable.",
+      "Rental + investment yield assumed as income; actual lender acceptance may vary—verify with specific bank policies.",
+      "Credit score assumed 780; actual score may adjust interest brackets slightly.",
+      "Emergency buffer of ₹20 L retained in all scenarios; user preference.",
+      "No upcoming major spends assumed.",
+      "Spouse as dependent; could consider co-applicant if spouse meets criteria (age/income)."
+    ],
+    "humanSummary": "Pramod (62, retired) wants to buy a ₹45 L house. He has a large ₹2 Cr investment portfolio and ₹20k monthly rental income. Assuming an estimated monthly income of ₹1.2 L (rental + investment yield), and keeping a ₹20 L emergency buffer, we compare several options: (A) high down payment of ₹30 L + ₹15 L home loan → EMI ~₹18.6k but ties up more cash; (B) moderate down payment ₹22.5 L + ₹22.5 L home loan over 8 years at ~9% → EMI ~₹31.4k, finishes by age ~70, retains buffer and corpus; (C) all-cash uses ₹45 L but reduces corpus significantly; (D) loan-against-securities is affordable EMI but high interest and market risk. Option B is recommended: EMI fits comfortably within income, tenure aligns with age policies, and preserves buffer/investment. Next steps: verify lender acceptance of rental/investment income, prepare documentation, consider co-applicant if needed, and lock rates or plan prepayments if extra cash arises."
+  }

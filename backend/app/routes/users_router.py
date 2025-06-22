@@ -10,6 +10,8 @@ from app.security import get_password_hash
 from dependencies import get_db
 import logging
 from typing import List
+import json
+import os
 
 router = APIRouter()
 
@@ -251,3 +253,37 @@ def get_user_financial_analyses(
 
     # Extract the Pydantic models from the database models
     return [analysis.analysis for analysis in analyses]
+
+
+@router.get("/{user_id}/financial-info")
+def get_financial_info(
+    *,
+    db: Session = Depends(get_db),
+    user_id: int,
+):
+    """
+    Retrieve financial information including scenarios from info.json for a specific user.
+    """
+    # Check if user exists
+    db_user = (
+        db.query(models.user_profile.User)
+        .filter(models.user_profile.User.id == user_id)
+        .first()
+    )
+    if not db_user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    # Read the info.json file
+    try:
+        # Get the path to the info.json file
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        info_json_path = os.path.join(current_dir, "..", "inputapidata", "info.json")
+        
+        with open(info_json_path, 'r', encoding='utf-8') as f:
+            info_data = json.load(f)
+        
+        return info_data
+    except FileNotFoundError:
+        raise HTTPException(status_code=404, detail="Financial info file not found")
+    except json.JSONDecodeError:
+        raise HTTPException(status_code=500, detail="Error reading financial info file")

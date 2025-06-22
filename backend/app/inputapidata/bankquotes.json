@@ -1,0 +1,23 @@
+[
+    {
+      "bank_name": "ICICI",
+      "amount": 4000000,
+      "tenure": 180,
+      "interest_rate": 8.2,
+      "emi": 38689.35
+    },
+    {
+      "bank_name": "AXIS",
+      "amount": 4500000,
+      "tenure": 180,
+      "interest_rate": 8.5,
+      "emi": 44313.28
+    },
+    {
+      "bank_name": "HDFC",
+      "amount": 3500000,
+      "tenure": 120,
+      "interest_rate": 9.0,
+      "emi": 44336.52
+    }
+  ]

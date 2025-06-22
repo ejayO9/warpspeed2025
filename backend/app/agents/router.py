@@ -22,6 +22,7 @@ router = APIRouter()
 class ChatRequest(BaseModel):
     message: str
     session_id: str
+    user_id: int  # Add user_id to the request
 
 @router.post("/chat")
 async def chat(request: ChatRequest):
@@ -36,12 +37,17 @@ async def chat(request: ChatRequest):
     messages = [HumanMessage(content=request.message)]
 
     async def event_stream():
-        for chunk in stream_chat_graph(messages, config):
-            if "agent" in chunk:
-                # It's a message from the agent
-                content = chunk["agent"]["messages"][-1].content
-                yield f"data: {json.dumps({'content': content})}\n\n"
-                await asyncio.sleep(0.01)
+        for chunk in stream_chat_graph(messages, config, user_id=request.user_id):
+            # Handle different agent outputs
+            if "conversation_agent" in chunk:
+                # Message from conversation agent
+                content = chunk["conversation_agent"]["messages"][-1].content
+                yield f"data: {json.dumps({'content': content, 'agent': 'conversation'})}\n\n"
+            elif "analysis_agent" in chunk:
+                # Message from analysis agent
+                content = chunk["analysis_agent"]["messages"][-1].content
+                yield f"data: {json.dumps({'content': content, 'agent': 'analysis'})}\n\n"
+            await asyncio.sleep(0.01)
 
     return StreamingResponse(event_stream(), media_type="text/event-stream")
 

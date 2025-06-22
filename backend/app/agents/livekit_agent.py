@@ -27,21 +27,20 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 class FinancialAssistant(Agent):
-    def __init__(self) -> None:
-        # Instructions for the standard OpenAI LLM
-        instructions = """You are a helpful financial assistant specializing in personal finance, investments, and financial planning. 
-        Your goal is to help users with their financial questions in a polite and professional manner.
+    def __init__(self, user_id: int = None) -> None:
+        # Instructions for the standard OpenAI LLM - aligned with our Agent1
+        instructions = """You are FinBuddy, a friendly financial advisor. Your goal is to understand the user's financial situation before analyzing loan options.
+
+        Please collect the following information naturally in conversation:
+        1. Source of income - Ask about salary, other income sources, and any expected changes (job change, salary hike, bonus, or income dip)
+        2. Upcoming big expenses - Home purchase, children's education, wedding, medical, travel, etc.
+        3. Dependents - Spouse, children, parents, and their needs
+        4. Any other relevant information they think you should know
+
+        Also, try to understand what purchase they're planning (e.g., car, house) and the approximate amount.
+
+        Be conversational and empathetic. After collecting all information, ask for confirmation: "I have gathered all the information I need. Shall I analyze your loan options now?"
         
-        You can help with:
-        - Investment advice and portfolio analysis
-        - Budgeting and expense tracking
-        - Retirement planning
-        - Tax planning strategies
-        - Insurance recommendations
-        - Debt management
-        - Financial goal setting
-        
-        Always provide accurate, helpful information while being conversational and easy to understand.
         Keep your responses concise but informative, suitable for voice conversation."""
         
         super().__init__(instructions=instructions)
@@ -49,13 +48,14 @@ class FinancialAssistant(Agent):
         # LangGraph integration
         self.session_id = str(uuid4())
         self.config = {"configurable": {"thread_id": self.session_id}}
+        self.user_id = user_id
         
         # Conversation tracking
         self.conversation_buffer = ""
         self.call_start_time = ""
         self.call_status = "ACTIVE"
         
-        logger.info(f"FinancialAssistant initialized with session ID: {self.session_id}")
+        logger.info(f"FinancialAssistant initialized with session ID: {self.session_id}, user_id: {self.user_id}")
 
 async def entrypoint(ctx: JobContext):
     """
@@ -63,8 +63,20 @@ async def entrypoint(ctx: JobContext):
     """
     logger.info("🚀 Agent entrypoint started for room: %s", ctx.room.name)
 
+    # Extract user_id from room name or metadata if available
+    # For now, we'll use a default - in production, you'd get this from the room metadata
+    user_id = 1  # Default user_id, should be passed from frontend
+    
+    # Try to extract user_id from room name pattern (e.g., "room_user_1")
+    try:
+        if "_user_" in ctx.room.name:
+            user_id = int(ctx.room.name.split("_user_")[-1])
+            logger.info(f"Extracted user_id: {user_id} from room name")
+    except:
+        logger.warning(f"Could not extract user_id from room name: {ctx.room.name}, using default: {user_id}")
+
     # Create our financial assistant
-    financial_assistant = FinancialAssistant()
+    financial_assistant = FinancialAssistant(user_id=user_id)
 
     # Create session with standard OpenAI LLM
     session = AgentSession(
@@ -125,13 +137,22 @@ async def entrypoint(ctx: JobContext):
             # Create message for LangGraph
             messages = [HumanMessage(content=user_input)]
             
-            # Process through our chat graph for context (not for response, just for memory)
-            for chunk in stream_chat(messages, assistant.config):
-                if "agent" in chunk:
-                    # This gives us context and memory, but we let OpenAI LLM handle the actual response
-                    agent_messages = chunk["agent"]["messages"]
+            # Process through our chat graph for context
+            for chunk in stream_chat(messages, assistant.config, user_id=assistant.user_id):
+                if "conversation_agent" in chunk:
+                    # This gives us context and memory from our conversation agent
+                    agent_messages = chunk["conversation_agent"]["messages"]
                     if agent_messages:
                         logger.info(f"🧠 LangGraph processed user input, context updated")
+                        # Store the current phase if available
+                        if "current_phase" in chunk["conversation_agent"]:
+                            assistant.current_phase = chunk["conversation_agent"]["current_phase"]
+                        break
+                elif "analysis_agent" in chunk:
+                    # Analysis results from Agent2
+                    agent_messages = chunk["analysis_agent"]["messages"]
+                    if agent_messages:
+                        logger.info(f"📊 Analysis completed by Agent2")
                         break
             
         except Exception as e:

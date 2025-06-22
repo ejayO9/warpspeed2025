@@ -1,5 +1,6 @@
 import json
 from typing import Any, List, Type, TypeVar
+from datetime import datetime
 
 from pydantic import BaseModel
 from sqlalchemy import Column, Float, ForeignKey, Integer, String
@@ -18,6 +19,14 @@ from database import Base
 T = TypeVar("T", bound=BaseModel)
 
 
+class DateTimeEncoder(json.JSONEncoder):
+    """Custom JSON encoder that handles datetime objects."""
+    def default(self, obj):
+        if isinstance(obj, datetime):
+            return obj.isoformat()
+        return super().default(obj)
+
+
 class PydanticType(TypeDecorator):
     impl = JSON
     cache_ok = True
@@ -34,8 +43,24 @@ class PydanticType(TypeDecorator):
             return None
 
         if self.as_list:
-            return json.dumps([m.model_dump(mode="json") for m in value])
-        return json.dumps(value.model_dump(mode="json"))
+            # Handle both Pydantic models and dictionaries
+            result = []
+            for item in value:
+                if hasattr(item, 'model_dump'):
+                    # It's a Pydantic model
+                    result.append(item.model_dump(mode="json"))
+                else:
+                    # It's already a dictionary
+                    result.append(item)
+            return json.dumps(result, cls=DateTimeEncoder)
+        else:
+            # Single value
+            if hasattr(value, 'model_dump'):
+                # It's a Pydantic model
+                return json.dumps(value.model_dump(mode="json"))
+            else:
+                # It's already a dictionary
+                return json.dumps(value, cls=DateTimeEncoder)
 
     def process_result_value(self, value: Any, dialect: Any) -> List[T] | T | None:
         if value is None:

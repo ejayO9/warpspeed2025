@@ -65,3 +65,32 @@ class TransactionPoint(BaseModel):
     category: str = Field(..., description="The category assigned to the transaction.")
     balance: float = Field(..., description="The balance after the transaction.")
     type: str = Field(..., description="The type of the transaction. whether it is a credit or debit.")
+
+
+class BankQuoteCreate(BaseModel):
+    """
+    Schema for creating a new bank quote.
+    """
+    
+    bank_name: str = Field(..., description="The name of the bank providing the quote.")
+    amount: float = Field(..., description="The loan amount requested.")
+    tenure: int = Field(..., description="The loan tenure in months.")
+    interest_rate: float = Field(..., description="The interest rate for the loan.")
+    emi: float = Field(..., description="The monthly EMI amount.")
+
+
+class BankQuote(BaseModel):
+    """
+    Schema for returning bank quote data.
+    """
+    
+    id: int = Field(..., description="Unique identifier for the bank quote.")
+    bank_name: str = Field(..., description="The name of the bank providing the quote.")
+    amount: float = Field(..., description="The loan amount requested.")
+    tenure: int = Field(..., description="The loan tenure in months.")
+    interest_rate: float = Field(..., description="The interest rate for the loan.")
+    emi: float = Field(..., description="The monthly EMI amount.")
+    user_id: int = Field(..., description="The ID of the user this quote belongs to.")
+
+    class Config:
+        from_attributes = True

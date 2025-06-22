@@ -1,0 +1,303 @@
+
+{
+    "email": "rahul.singh@example.com",
+    "password": "securepassword123",
+    "full_name": "Rahul Singh",
+    "date_of_birth": "1990-06-22",
+    "gender": "Male",
+    "pan_id": "PANRAHUL90",
+    "passport_id": "PORTH1234",
+    "address": "123 Sample Street, Bangalore, India",
+    "phone_number": "9876543210",
+    "financials": {
+      "credit_score_name": "Cibil",
+      "credit_score": 720,
+      "total_income": 1800000,
+      "loans_balance": 2100000,
+      "loans_sanctioned_amount": 2100000,
+      "loans_past_due_amount": 0,
+      "active_loans_count": 2,
+      "mutual_funds_summary": [
+        {
+          "isin": "INF00000ABC",
+          "description": "ABC Growth Fund",
+          "scheme_category": "LARGE_CAP_FUND",
+          "scheme_option": "GROWTH",
+          "amc": "ABC Asset Management",
+          "units": 1000.0,
+          "current_value": 600000.0,
+          "cost_value": 500000.0,
+          "nav": 600.0,
+          "nav_date": "2025-01-01T00:00:00+05:30"
+        }
+      ],
+      "equities_summary": [
+        {
+          "isin": "INE009A01021",
+          "description": "Infosys Limited",
+          "issuer_name": "Infosys",
+          "units": 50,
+          "current_value": 200000.0,
+          "last_traded_price": 4000.0
+        }
+      ],
+      "etf_summary": [
+        {
+          "isin": "INF204KB14I2",
+          "description": "Nippon India ETF Nifty BeES",
+          "units": 100.0,
+          "current_value": 200000.0,
+          "nav": 2000.0,
+          "last_nav_date": "2025-01-01T00:00:00+05:30"
+        }
+      ],
+      "bank_balance_history": [
+        {
+          "timestamp": "2024-06-01T00:00:00+05:30",
+          "balance": 300000.0
+        },
+        {
+          "timestamp": "2024-07-01T00:00:00+05:30",
+          "balance": 390000.0
+        },
+        {
+          "timestamp": "2024-08-01T00:00:00+05:30",
+          "balance": 480000.0
+        },
+        {
+          "timestamp": "2024-09-01T00:00:00+05:30",
+          "balance": 570000.0
+        },
+        {
+          "timestamp": "2024-10-01T00:00:00+05:30",
+          "balance": 660000.0
+        },
+        {
+          "timestamp": "2024-11-01T00:00:00+05:30",
+          "balance": 750000.0
+        },
+        {
+          "timestamp": "2024-12-01T00:00:00+05:30",
+          "balance": 840000.0
+        },
+        {
+          "timestamp": "2025-01-01T00:00:00+05:30",
+          "balance": 930000.0
+        },
+        {
+          "timestamp": "2025-02-01T00:00:00+05:30",
+          "balance": 1020000.0
+        },
+        {
+          "timestamp": "2025-03-01T00:00:00+05:30",
+          "balance": 1110000.0
+        },
+        {
+          "timestamp": "2025-04-01T00:00:00+05:30",
+          "balance": 1200000.0
+        },
+        {
+          "timestamp": "2025-05-01T00:00:00+05:30",
+          "balance": 1290000.0
+        }
+      ],
+      "inflow_history": [
+        {
+          "timestamp": "2024-06-01T10:00:00+05:30",
+          "amount": 150000.0,
+          "narration": "Salary Credit",
+          "category": "Income",
+          "balance": 450000.0,
+          "type": "credit"
+        },
+        {
+          "timestamp": "2024-07-01T10:00:00+05:30",
+          "amount": 150000.0,
+          "narration": "Salary Credit",
+          "category": "Income",
+          "balance": 540000.0,
+          "type": "credit"
+        },
+        {
+          "timestamp": "2024-08-01T10:00:00+05:30",
+          "amount": 150000.0,
+          "narration": "Salary Credit",
+          "category": "Income",
+          "balance": 630000.0,
+          "type": "credit"
+        },
+        {
+          "timestamp": "2024-09-01T10:00:00+05:30",
+          "amount": 150000.0,
+          "narration": "Salary Credit",
+          "category": "Income",
+          "balance": 720000.0,
+          "type": "credit"
+        },
+        {
+          "timestamp": "2024-10-01T10:00:00+05:30",
+          "amount": 150000.0,
+          "narration": "Salary Credit",
+          "category": "Income",
+          "balance": 810000.0,
+          "type": "credit"
+        },
+        {
+          "timestamp": "2024-11-01T10:00:00+05:30",
+          "amount": 150000.0,
+          "narration": "Salary Credit",
+          "category": "Income",
+          "balance": 900000.0,
+          "type": "credit"
+        },
+        {
+          "timestamp": "2024-12-01T10:00:00+05:30",
+          "amount": 150000.0,
+          "narration": "Salary Credit",
+          "category": "Income",
+          "balance": 990000.0,
+          "type": "credit"
+        },
+        {
+          "timestamp": "2025-01-01T10:00:00+05:30",
+          "amount": 150000.0,
+          "narration": "Salary Credit",
+          "category": "Income",
+          "balance": 1080000.0,
+          "type": "credit"
+        },
+        {
+          "timestamp": "2025-02-01T10:00:00+05:30",
+          "amount": 150000.0,
+          "narration": "Salary Credit",
+          "category": "Income",
+          "balance": 1170000.0,
+          "type": "credit"
+        },
+        {
+          "timestamp": "2025-03-01T10:00:00+05:30",
+          "amount": 150000.0,
+          "narration": "Salary Credit",
+          "category": "Income",
+          "balance": 1260000.0,
+          "type": "credit"
+        },
+        {
+          "timestamp": "2025-04-01T10:00:00+05:30",
+          "amount": 150000.0,
+          "narration": "Salary Credit",
+          "category": "Income",
+          "balance": 1350000.0,
+          "type": "credit"
+        },
+        {
+          "timestamp": "2025-05-01T10:00:00+05:30",
+          "amount": 150000.0,
+          "narration": "Salary Credit",
+          "category": "Income",
+          "balance": 1440000.0,
+          "type": "credit"
+        }
+      ],
+      "outflow_history": [
+        {
+          "timestamp": "2024-06-05T15:00:00+05:30",
+          "amount": 25000.0,
+          "narration": "Rent",
+          "category": "Rent",
+          "balance": 425000.0,
+          "type": "debit"
+        },
+        {
+          "timestamp": "2024-06-05T15:00:00+05:30",
+          "amount": 20000.0,
+          "narration": "Home Loan Emi",
+          "category": "Home Loan Emi",
+          "balance": 405000.0,
+          "type": "debit"
+        },
+        {
+          "timestamp": "2024-06-05T15:00:00+05:30",
+          "amount": 8000.0,
+          "narration": "Car Loan Emi",
+          "category": "Car Loan Emi",
+          "balance": 397000.0,
+          "type": "debit"
+        },
+        {
+          "timestamp": "2024-06-05T15:00:00+05:30",
+          "amount": 10000.0,
+          "narration": "Child Fee",
+          "category": "Child Fee",
+          "balance": 387000.0,
+          "type": "debit"
+        },
+        {
+          "timestamp": "2024-06-05T15:00:00+05:30",
+          "amount": 15000.0,
+          "narration": "Groceries",
+          "category": "Groceries",
+          "balance": 372000.0,
+          "type": "debit"
+        },
+        {
+          "timestamp": "2024-06-05T15:00:00+05:30",
+          "amount": 5000.0,
+          "narration": "Utilities",
+          "category": "Utilities",
+          "balance": 367000.0,
+          "type": "debit"
+        },
+        {
+          "timestamp": "2024-07-05T15:00:00+05:30",
+          "amount": 25000.0,
+          "narration": "Rent",
+          "category": "Rent",
+          "balance": 140000.0,
+          "type": "debit"
+        },
+        {
+          "timestamp": "2024-07-05T15:00:00+05:30",
+          "amount": 20000.0,
+          "narration": "Home Loan Emi",
+          "category": "Home Loan Emi",
+          "balance": 1200000.0,
+          "type": "debit"
+        },
+        {
+          "timestamp": "2024-07-05T15:00:00+05:30",
+          "amount": 8000.0,
+          "narration": "Car Loan Emi",
+          "category": "Car Loan Emi",
+          "balance": 1192000.0,
+          "type": "debit"
+        },
+        {
+          "timestamp": "2024-07-05T15:00:00+05:30",
+          "amount": 10000.0,
+          "narration": "Child Fee",
+          "category": "Child Fee",
+          "balance": 1182000.0,
+          "type": "debit"
+        },
+        {
+          "timestamp": "2024-07-05T15:00:00+05:30",
+          "amount": 15000.0,
+          "narration": "Groceries",
+          "category": "Groceries",
+          "balance": 1167000.0,
+          "type": "debit"
+        },
+        {
+          "timestamp": "2024-07-05T15:00:00+05:30",
+          "amount": 5000.0,
+          "narration": "Utilities",
+          "category": "Utilities",
+          "balance": 1162000.0,
+          "type": "debit"
+        }
+      ]
+    }
+  }
+  
+  

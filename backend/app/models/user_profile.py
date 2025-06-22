@@ -49,4 +49,14 @@ class User(Base):
         back_populates="user",
         uselist=False,
         cascade="all, delete-orphan",
+    )
+    chat_info = relationship(
+        "UserChatInfo",
+        back_populates="user",
+        cascade="all, delete-orphan",
+    )
+    financial_analyses = relationship(
+        "FinancialAnalysis",
+        back_populates="user",
+        cascade="all, delete-orphan",
     ) 
